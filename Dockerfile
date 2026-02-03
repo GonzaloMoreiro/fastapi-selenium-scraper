@@ -1,39 +1,31 @@
 FROM python:3.11-slim
 
-ENV DEBIAN_FRONTEND=noninteractive
-
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
-    chromium \
-    chromium-driver \
     wget \
+    gnupg \
     unzip \
     curl \
-    ca-certificates \
-    fonts-liberation \
-    libnss3 \
-    libxss1 \
-    libasound2 \
-    libatk-bridge2.0-0 \
-    libgtk-3-0 \
-    libdrm2 \
-    libgbm1 \
-    libxdamage1 \
-    libxrandr2 \
-    libxcomposite1 \
-    libxshmfence1 \
-    libxkbcommon0 \
+    chromium \
+    chromium-driver \
     && rm -rf /var/lib/apt/lists/*
 
+# Variables para Selenium
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
+
+# Crear directorio de trabajo
 WORKDIR /app
 
-COPY python/requirements.txt requirements.txt
+# Copiar requirements
+COPY requirements.txt .
+
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app/ ./app/
+# Copiar el código
+COPY . .
 
-ENV PYTHONPATH=/app
-ENV PYTHON_DOWNLOAD_PATH=/app/downloads
-
+# Crear carpeta de descargas
 RUN mkdir -p /app/downloads
 
 EXPOSE 8000

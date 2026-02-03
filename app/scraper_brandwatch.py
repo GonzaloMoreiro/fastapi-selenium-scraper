@@ -48,25 +48,29 @@ def web_scraping(url):
     os.makedirs(DOWNLOAD_PATH, exist_ok=True)
 
     chrome_options = Options()
-    chrome_options.binary_location = CHROME_BIN
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.add_experimental_option("prefs", {
-        "download.default_directory": DOWNLOAD_PATH,
-        "download.prompt_for_download": False
-    })
+chrome_options.binary_location = CHROME_BIN
+chrome_options.add_argument('--headless=new')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+chrome_options.add_argument('--disable-gpu')
 
-    service = Service(CHROMEDRIVER_PATH)
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+chrome_options.add_experimental_option("prefs", {
+    "download.default_directory": DOWNLOAD_PATH,
+    "download.prompt_for_download": False,
+    "download.directory_upgrade": True,
+    "safebrowsing.enabled": True
+})
+
+service = Service(CHROMEDRIVER_PATH)
+driver = webdriver.Chrome(service=service, options=chrome_options)
     wait = WebDriverWait(driver, 30)
 
     try:
         driver.get(url)
 
-        wait.until(EC.presence_of_element_located((By.NAME, "email"))).send_keys(mail_brandwatch)
-        driver.find_element(By.NAME, "password").send_keys(contrasenia_brandwatch)
-        driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
+        wait.until(EC.presence_of_element_located((By.NAME, "email"))).send_keys(MAIL_BRANDWATCH)
+driver.find_element(By.NAME, "password").send_keys(PASSWORD_BRANDWATCH)
+driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
 
         cookie_button = wait.until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler")))
         try_click_element(driver, cookie_button)

@@ -1,6 +1,6 @@
-from scraper_brandwatch import web_scraping
-from file_utils import renombrar_archivo, process_data
-from integrations import send_data_to_n8n
+from app.scraper_brandwatch import web_scraping
+from app.file_utils import renombrar_archivo, process_data
+from app.integrations import send_data_to_n8n
 
 
 def run_mentions(url):

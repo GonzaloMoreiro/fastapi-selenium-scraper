@@ -89,15 +89,13 @@
 import os
 import time
 import logging
-from selenium import webdriver
+import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import ElementClickInterceptedException
-from app.config import DOWNLOAD_PATH, CHROME_BIN, CHROMEDRIVER_PATH
+from app.config import DOWNLOAD_PATH
 
 MAIL_BRANDWATCH = os.getenv("MAIL_BRANDWATCH")
 PASSWORD_BRANDWATCH = os.getenv("PASSWORD_BRANDWATCH")
@@ -130,15 +128,14 @@ def try_click_element(driver, element, max_attempts=3):
 def web_scraping(url):
     os.makedirs(DOWNLOAD_PATH, exist_ok=True)
 
-    chrome_options = Options()
-    # Apunta al binario de Chromium en Railway
-    chrome_options.binary_location = CHROME_BIN
-    chrome_options.add_argument('--headless=new')
+    # Inicializamos undetected_chromedriver
+    chrome_options = uc.ChromeOptions()
+    chrome_options.headless = True  # modo headless
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--remote-debugging-port=9222')
-
+    
     chrome_options.add_experimental_option("prefs", {
         "download.default_directory": DOWNLOAD_PATH,
         "download.prompt_for_download": False,
@@ -146,9 +143,7 @@ def web_scraping(url):
         "safebrowsing.enabled": True
     })
 
-    # Service apunta al chromedriver instalado en Docker
-    service = Service(CHROMEDRIVER_PATH)
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    driver = uc.Chrome(options=chrome_options)
     wait = WebDriverWait(driver, 30)
 
     try:
@@ -175,4 +170,3 @@ def web_scraping(url):
 
     finally:
         driver.quit()
-

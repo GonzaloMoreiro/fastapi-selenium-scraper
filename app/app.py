@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from processors import run_mentions
+from app.processors import run_mentions
 
 app = FastAPI()
 

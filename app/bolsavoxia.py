@@ -4,7 +4,7 @@ import logging
 import pandas as pd
 from datetime import datetime, timedelta
 
-from scraper_redmine import excel_download
+from app.scraper_redmine import excel_download
 
 logger = logging.getLogger(__name__)
 

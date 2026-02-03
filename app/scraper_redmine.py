@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 
-from config import DOWNLOAD_PATH, CHROME_BIN, CHROMEDRIVER_PATH
+from app.config import DOWNLOAD_PATH, CHROME_BIN, CHROMEDRIVER_PATH
 
 logger = logging.getLogger(__name__)
 

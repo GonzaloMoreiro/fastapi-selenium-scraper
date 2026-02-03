@@ -1,5 +1,5 @@
 import requests
-from config import N8N_WEBHOOK_URL
+from app.config import N8N_WEBHOOK_URL
 
 
 def send_data_to_n8n(payload):

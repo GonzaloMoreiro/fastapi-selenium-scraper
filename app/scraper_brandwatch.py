@@ -10,7 +10,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import ElementClickInterceptedException
 
-from cred import contrasenia_brandwatch, mail_brandwatch
+import os
+
+MAIL_BRANDWATCH = os.getenv("MAIL_BRANDWATCH")
+PASSWORD_BRANDWATCH = os.getenv("PASSWORD_BRANDWATCH")
 from config import DOWNLOAD_PATH, CHROME_BIN, CHROMEDRIVER_PATH
 
 logger = logging.getLogger(__name__)

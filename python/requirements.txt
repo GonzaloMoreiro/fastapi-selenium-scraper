@@ -5,3 +5,5 @@ webdriver-manager
 pandas
 openpyxl
 requests
+undetected-chromedriver
+pandas

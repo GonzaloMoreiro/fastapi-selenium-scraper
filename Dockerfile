@@ -1,40 +1,6 @@
-# FROM python:3.11-slim
-
-# # Instalar dependencias del sistema
-# RUN apt-get update && apt-get install -y \
-#     wget \
-#     gnupg \
-#     unzip \
-#     curl \
-#     chromium \
-#     chromium-driver \
-#     && rm -rf /var/lib/apt/lists/*
-
-# # Variables para Selenium
-# ENV CHROME_BIN=/usr/bin/chromium
-# ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
-
-# # Crear directorio de trabajo
-# WORKDIR /app
-
-# # Copiar requirements
-# COPY requirements.txt .
-
-# RUN pip install --no-cache-dir -r requirements.txt
-
-# # Copiar el código
-# COPY . .
-
-# # Crear carpeta de descargas
-# RUN mkdir -p /app/downloads
-
-# EXPOSE 8000
-
-# CMD ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "8000"]
-
 FROM python:3.11-slim
 
-# Instalar dependencias del sistema
+# Instalar dependencias del sistema y Chromium completo
 RUN apt-get update && apt-get install -y \
     wget \
     gnupg \
@@ -42,27 +8,35 @@ RUN apt-get update && apt-get install -y \
     curl \
     chromium \
     chromium-driver \
+    libnss3 \
+    libatk1.0-0 \
+    libx11-6 \
+    libxcomposite1 \
+    libxrandr2 \
+    libxdamage1 \
+    libxfixes3 \
+    libxi6 \
+    libgtk-3-0 \
+    libcups2 \
+    libdrm2 \
+    libgbm1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Variables para Selenium
+# Variables de entorno para Selenium
 ENV CHROME_BIN=/usr/bin/chromium
 ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
 
-# Crear directorio de trabajo
+# Directorio de trabajo
 WORKDIR /app
 
-# Copiar requirements
+# Copiar requirements y código
 COPY requirements.txt .
-
 RUN pip install --no-cache-dir -r requirements.txt
-
-# Copiar el código
 COPY . .
 
-# Crear carpeta de descargas y dar permisos
-RUN mkdir -p /app/downloads && chmod -R 777 /app/downloads
+# Carpeta de descargas
+RUN mkdir -p /app/downloads
 
 EXPOSE 8000
 
 CMD ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "8000"]
-

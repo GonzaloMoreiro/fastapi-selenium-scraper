@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+
+# Docker
+downloads/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
